@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  app:
+    build: .
+    command: nodemon app.js
+    volumes:
+        - ./myapp:/myapp/
+    ports:
+        - "3000:3000"
+    environment:
+        PORT: 3000 # this is optional, allows express to use process.env.PORT instead of a raw 3000
+  mongodb_container:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongodb
+    ports:
+      - 27019:27017
+    volumes:
+      - /MongoDb:/data/db
+    depends_on:
+    - app
