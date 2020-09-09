@@ -5,12 +5,29 @@ const hostname = '0.0.0.0';
 const port = process.env.PORT;
 
 const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World\n');
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    const lowerCaseUrl = req.url.toLowerCase();
+    switch (lowerCaseUrl) {
+        case '/add':
+            res.end('ADD\n');
+            break;
+        case '/update':
+            res.end('UPDATE\n');
+            break;
+        case '/delete':
+            res.end('DELETE\n');
+            break;
+        default:
+            res.end('Hello World\n');
+            break;
+    }
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+server.listen(port, hostname, (err) => {
+    if (err) {
+        return console.log('something bad happened', err);
+    }
+    console.log(`Server running at http://${hostname}:${port}/`);
 });
- 
+
