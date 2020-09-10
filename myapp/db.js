@@ -14,6 +14,7 @@ async function getDatabasesList() {
         const options = {useUnifiedTopology: true};
         const client = await MongoClient.connect(mongoUrl, options);
         await listDatabases(client);
+        await client.close();
     } catch (e) {
         console.error(e);
     }
