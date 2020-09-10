@@ -30,5 +30,6 @@ class Collections {
 }
 
 module.exports = {
+    client: client,
     getDatabasesList: getDatabasesList
 }
