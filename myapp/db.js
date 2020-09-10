@@ -29,6 +29,6 @@ class Collections {
     }
 }
 
-//module.exports = {
-//    DB: db
-//}
+module.exports = {
+    getDatabasesList: getDatabasesList
+}

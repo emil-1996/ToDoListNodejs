@@ -1,5 +1,6 @@
 const http = require('http');
 const url = require('url');
+const dbFunctions = require('./db.js');
 
 const hostname = '0.0.0.0';
 const port = process.env.PORT;
