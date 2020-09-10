@@ -17,6 +17,6 @@ services:
     ports:
       - 27019:27017
     volumes:
-      - /MongoDb:/data/db
+      - ./MongoDb:/data/db
     depends_on:
     - app
