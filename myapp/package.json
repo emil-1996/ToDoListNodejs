@@ -1,4 +1,7 @@
 {
     "name": "my-awesome-package",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "dependencies": {
+        "mongodb": "^3.6.1"
+    }
 }
