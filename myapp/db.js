@@ -9,15 +9,20 @@ async function listDatabases(client) {
     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
 }
 
-async function getDatabasesList() {
+
+async function call(method) {
     try {
         const options = {useUnifiedTopology: true};
         const client = await MongoClient.connect(mongoUrl, options);
-        await listDatabases(client);
+        await method(client);
         await client.close();
     } catch (e) {
         console.error(e);
     }
+}
+
+async function getDatabasesList() {
+    await call(listDatabases);
 }
 
 module.exports = {
