@@ -1,7 +1,7 @@
 const {MongoClient} = require('mongodb');
 const login = 'root';
 const pass = 'mongodb';
-const mongoUrl = `mongodb://${login}:${pass}@localhost:27017/`;
+const mongoUrl = `mongodb://${login}:${pass}@mongodb_container:27017/`;
 const client = new MongoClient(mongoUrl);
 
 
