@@ -12,6 +12,7 @@ const server = http.createServer((req, res) => {
     switch (lowerCaseUrl) {
         case '/add':
             dbFunctions.getDatabasesList();
+            dbFunctions.adTask();
             res.end('ADD\n');
             break;
         case '/update':
