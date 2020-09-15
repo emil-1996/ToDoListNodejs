@@ -40,6 +40,13 @@ async function addTasksFunction(client, task) {
 }
 
 function validateSchemaTask(task) {
+    const taskContainName = task.hasOwnProperty('name');
+    const taskContainDesc = task.hasOwnProperty('desc');
+    
+    if(!taskContainName || !taskContainDesc){
+        return false;
+    }
+   
     return call(addTasksFunction, task);
 }
 
