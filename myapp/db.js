@@ -10,34 +10,39 @@ async function listDatabases(client) {
 }
 
 
-async function call(method) {
+async function call(method, additionalParams = false) {
     try {
         const options = {useUnifiedTopology: true};
         const client = await MongoClient.connect(mongoUrl, options);
-        await method(client);
+        if (additionalParams) {
+            await method(client, additionalParams);
+        } else {
+            await method(client);
+        }
         await client.close();
     } catch (e) {
         console.error(e);
-    }
+}
 }
 
 async function getDatabasesList() {
     await call(listDatabases);
 }
 
-async function addTasksFunction(client) {
-    client.db.collection('tasks', function (err, collection) {
-        collection.insert({id: 1, firstName: 'Steve', lastName: 'Jobs'});
-        collection.insert({id: 2, firstName: 'Bill', lastName: 'Gates'});
-        collection.insert({id: 3, firstName: 'James', lastName: 'Bond'});
-        client.db.collection('tasks').count(function (err, count) {
-            if (err)
-                throw err;
-
+async function addTasksFunction(client, task) {
+    const db = client.db("todo");
+    db.collection('todo', function (err, collection) {
+        collection.insertOne(task);
+        db.collection('todo').countDocuments(function (err, count) {
             console.log('Total Rows: ' + count);
         });
     });
 }
+
+function validateSchemaTask(task) {
+    return call(addTasksFunction, task);
+}
+
 
 async function adTask() {
     await call(addTasksFunction);
@@ -45,5 +50,6 @@ async function adTask() {
 
 module.exports = {
     getDatabasesList: getDatabasesList,
-    adTask: adTask
+    adTask: adTask,
+    validateSchemaTask: validateSchemaTask
 }

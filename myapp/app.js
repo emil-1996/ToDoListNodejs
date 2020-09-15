@@ -5,6 +5,8 @@ const dbFunctions = require('./db.js');
 const hostname = '0.0.0.0';
 const port = process.env.PORT;
 
+const task = {id: 2, firstName: 'Bill', lastName: 'Miotła'};
+
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
@@ -12,7 +14,7 @@ const server = http.createServer((req, res) => {
     switch (lowerCaseUrl) {
         case '/add':
             dbFunctions.getDatabasesList();
-            dbFunctions.adTask();
+            dbFunctions.validateSchemaTask(task);
             res.end('ADD\n');
             break;
         case '/update':
