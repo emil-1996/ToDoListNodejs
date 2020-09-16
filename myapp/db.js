@@ -1,4 +1,4 @@
-const {MongoClient} = require('mongodb');
+const { MongoClient } = require('mongodb');
 const login = 'root';
 const pass = 'mongodb';
 const mongoUrl = `mongodb://${login}:${pass}@mongodb_container:27017/`;
@@ -12,7 +12,7 @@ async function listDatabases(client) {
 
 async function call(method, additionalParams = false) {
     try {
-        const options = {useUnifiedTopology: true};
+        const options = { useUnifiedTopology: true };
         const client = await MongoClient.connect(mongoUrl, options);
         if (additionalParams) {
             await method(client, additionalParams);
@@ -22,7 +22,7 @@ async function call(method, additionalParams = false) {
         await client.close();
     } catch (e) {
         console.error(e);
-}
+    }
 }
 
 async function getDatabasesList() {
@@ -40,13 +40,21 @@ async function addTasksFunction(client, task) {
 }
 
 function validateSchemaTask(task) {
+    const allowedKeys = ['name', 'desc'];
     const taskContainName = task.hasOwnProperty('name');
     const taskContainDesc = task.hasOwnProperty('desc');
-    
-    if(!taskContainName || !taskContainDesc){
+
+    if (!taskContainName || !taskContainDesc) {
         return false;
     }
-   
+
+    for (const value of Object.keys(task)) {
+        isAllowedKey = allowedKeys.includes(value);
+        if (!isAllowedKey) {
+            return false;
+        }
+    }
+
     return call(addTasksFunction, task);
 }
 
