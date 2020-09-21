@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const {MongoClient} = require('mongodb');
 const login = 'root';
 const pass = 'mongodb';
 const mongoUrl = `mongodb://${login}:${pass}@mongodb_container:27017/`;
@@ -12,7 +12,7 @@ async function listDatabases(client) {
 
 async function call(method, additionalParams = false) {
     try {
-        const options = { useUnifiedTopology: true };
+        const options = {useUnifiedTopology: true};
         const client = await MongoClient.connect(mongoUrl, options);
         if (additionalParams) {
             await method(client, additionalParams);
@@ -22,14 +22,14 @@ async function call(method, additionalParams = false) {
         await client.close();
     } catch (e) {
         console.error(e);
-    }
+}
 }
 
 async function getDatabasesList() {
     await call(listDatabases);
 }
 
-async function addTasksFunction(client, task) {
+async function addTasksFunctionToDb(client, task) {
     const db = client.db("todo");
     db.collection('todo', function (err, collection) {
         collection.insertOne(task);
@@ -55,8 +55,19 @@ function validateSchemaTask(task) {
         }
     }
 
-    return call(addTasksFunction, task);
+    return true;
 }
+
+async function addTasksFunction(task) {
+    const correctlySchema = validateSchemaTask(task);
+    if (!correctlySchema) {
+        return false;
+    }
+    console.log("Status schema " + correctlySchema);
+
+    await call(addTasksFunctionToDb, task);
+}
+
 
 
 async function adTask() {
@@ -65,6 +76,6 @@ async function adTask() {
 
 module.exports = {
     getDatabasesList: getDatabasesList,
-    adTask: adTask,
-    validateSchemaTask: validateSchemaTask
+    addTasksFunction: addTasksFunction,
+
 }
