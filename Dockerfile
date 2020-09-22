@@ -8,3 +8,4 @@ RUN apt-get update
 RUN apt-get install mc -y
 RUN npm i -g nodemon
 RUN npm i -g mongodb
+RUN npm i -g joi
