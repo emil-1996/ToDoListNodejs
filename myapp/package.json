@@ -1,5 +1,5 @@
 {
-    "name": "my-awesome-package",
+    "name": "ToDo",
     "version": "1.0.0",
     "dependencies": {
         "joi": "^17.2.1",
