@@ -1,4 +1,4 @@
-const {MongoClient} = require('mongodb');
+const { MongoClient } = require('mongodb');
 const login = 'root';
 const pass = 'mongodb';
 const mongoUrl = `mongodb://${login}:${pass}@mongodb_container:27017/`;
@@ -12,7 +12,7 @@ async function listDatabases(client) {
 
 async function call(method, additionalParams = false) {
     try {
-        const options = {useUnifiedTopology: true};
+        const options = { useUnifiedTopology: true };
         const client = await MongoClient.connect(mongoUrl, options);
         if (additionalParams) {
             await method(client, additionalParams);
@@ -22,7 +22,7 @@ async function call(method, additionalParams = false) {
         await client.close();
     } catch (e) {
         console.error(e);
-}
+    }
 }
 
 async function getDatabasesList() {
@@ -45,13 +45,13 @@ function validateSchemaTask(task) {
     const taskContainDesc = task.hasOwnProperty('desc');
 
     if (!taskContainName || !taskContainDesc) {
-        return false;
+        throw new Error('Object doesn\'t have required property');
     }
 
     for (const value of Object.keys(task)) {
         isAllowedKey = allowedKeys.includes(value);
         if (!isAllowedKey) {
-            return false;
+            throw new Error('Object has disallowed keys');
         }
     }
 
@@ -59,13 +59,12 @@ function validateSchemaTask(task) {
 }
 
 async function addTasksFunction(task) {
-    const correctlySchema = validateSchemaTask(task);
-    if (!correctlySchema) {
-        return false;
+    try {
+        const correctlySchema = validateSchemaTask(task);
+        await call(addTasksFunctionToDb, task);
+    } catch (err) {
+        console.error(err.message);
     }
-    console.log("Status schema " + correctlySchema);
-
-    await call(addTasksFunctionToDb, task);
 }
 
 
