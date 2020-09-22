@@ -5,4 +5,5 @@ WORKDIR /myapp
 ADD /myapp /myapp
 RUN apt-get update
 RUN apt-get install mc -y
+RUN npm i -g nodemon
 RUN npm install
