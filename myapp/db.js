@@ -19,9 +19,10 @@ async function call(method, additionalParams = false) {
         } else {
             await method(client);
         }
-        await client.close();
     } catch (e) {
         console.error(e);
+    } finally{
+        await client.close();
     }
 }
 
@@ -30,13 +31,17 @@ async function getDatabasesList() {
 }
 
 async function addTasksFunctionToDb(client, task) {
-    const db = client.db("todo");
-    db.collection('todo', function (err, collection) {
-        collection.insertOne(task);
-        db.collection('todo').countDocuments(function (err, count) {
-            console.log('Total Rows: ' + count);
+    try {
+        const db = await client.db("todo");
+        await db.collection('todo', function (err, collection) {
+            collection.insertOne(task);
+            db.collection('todo').countDocuments(function (err, count) {
+                console.log('Total Rows: ' + count);
+            });
         });
-    });
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 function validateSchemaTask(task) {

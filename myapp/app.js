@@ -5,7 +5,7 @@ const dbFunctions = require('./db.js');
 const hostname = '0.0.0.0';
 const port = process.env.PORT;
 
-const task = {name: 'Bill', desc: 'Miotła'};
+const task = {name: 'Bill', desc: 'Miotł'};
 
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
