@@ -2,6 +2,7 @@ const { MongoClient } = require('mongodb');
 const login = 'root';
 const pass = 'mongodb';
 const mongoUrl = `mongodb://${login}:${pass}@mongodb_container:27017/`;
+const validator = require('./validator.js');
 
 async function listDatabases(client) {
     databasesList = await client.db().admin().listDatabases();
@@ -37,23 +38,11 @@ async function addTasksFunctionToDb(client, task) {
         .catch(err => console.error(`Failed to insert item: ${err}`))
 }
 
-function validateSchemaTask(task) {
-    const allowedKeys = ['name', 'desc'];
-    const taskContainName = task.hasOwnProperty('name');
-    const taskContainDesc = task.hasOwnProperty('desc');
+async function validateSchemaTask(task) {
 
-    if (!taskContainName || !taskContainDesc) {
-        throw new Error('Object doesn\'t have required property');
-    }
-
-    for (const value of Object.keys(task)) {
-        isAllowedKey = allowedKeys.includes(value);
-        if (!isAllowedKey) {
-            throw new Error('Object has disallowed keys');
-        }
-    }
-
-    return true;
+    validator.validateSchemaToDoInsert(task)
+        .then(result => console.log(result))
+        .catch(err => console.log(err));
 }
 
 async function addTasksFunction(task) {
@@ -65,8 +54,6 @@ async function addTasksFunction(task) {
     }
 }
 
-
-
 async function adTask() {
     await call(addTasksFunction);
 }
@@ -74,5 +61,4 @@ async function adTask() {
 module.exports = {
     getDatabasesList: getDatabasesList,
     addTasksFunction: addTasksFunction,
-
 }
