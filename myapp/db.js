@@ -10,7 +10,6 @@ async function listDatabases(client) {
     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
 }
 
-
 async function call(method, additionalParams = false) {
     try {
         const options = { useUnifiedTopology: true };
@@ -22,8 +21,6 @@ async function call(method, additionalParams = false) {
         }
     } catch (e) {
         console.error(e);
-    } finally {
-        await client.close();
     }
 }
 
@@ -38,24 +35,13 @@ async function addTasksFunctionToDb(client, task) {
         .catch(err => console.error(`Failed to insert item: ${err}`))
 }
 
-async function validateSchemaTask(task) {
-
-    validator.validateSchemaToDoInsert(task)
-        .then(result => console.log(result))
-        .catch(err => console.log(err));
-}
-
 async function addTasksFunction(task) {
     try {
-        const correctlySchema = validateSchemaTask(task);
+        await validator.validateSchemaToDoInsert(task)
         await call(addTasksFunctionToDb, task);
     } catch (err) {
         console.error(err.message);
     }
-}
-
-async function adTask() {
-    await call(addTasksFunction);
 }
 
 module.exports = {
