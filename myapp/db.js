@@ -21,7 +21,7 @@ async function call(method, additionalParams = false) {
         }
     } catch (e) {
         console.error(e);
-    } finally{
+    } finally {
         await client.close();
     }
 }
@@ -31,17 +31,10 @@ async function getDatabasesList() {
 }
 
 async function addTasksFunctionToDb(client, task) {
-    try {
-        const db = await client.db("todo");
-        await db.collection('todo', function (err, collection) {
-            collection.insertOne(task);
-            db.collection('todo').countDocuments(function (err, count) {
-                console.log('Total Rows: ' + count);
-            });
-        });
-    } catch (e) {
-        console.error(e);
-    }
+    const todoCollection = client.db("todo").collection("todo");
+    todoCollection.insertOne(task)
+        .then(result => console.log(`Successfully inserted item with _id: ${result.insertedId}`))
+        .catch(err => console.error(`Failed to insert item: ${err}`))
 }
 
 function validateSchemaTask(task) {
