@@ -5,7 +5,7 @@ const dbFunctions = require('./db.js');
 const hostname = '0.0.0.0';
 const port = process.env.PORT;
 
-const task = { name: 'Bill', desc: '12345678910111112312' };
+const task = { name: 'Bill', desc: 'abcdefghjkuewqasdasdsa' };
 
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
@@ -13,7 +13,7 @@ const server = http.createServer((req, res) => {
     const lowerCaseUrl = req.url.toLowerCase();
     switch (lowerCaseUrl) {
         case '/add':
-            dbFunctions.addTasksFunction(task);
+            dbFunctions.todo.addTasksFunction(task);
             res.end('ADD\n');
             break;
         case '/update':
@@ -23,12 +23,11 @@ const server = http.createServer((req, res) => {
             res.end('DELETE\n');
             break;
         case '/get':
-            console.log(dbFunctions);
-            //dbFunctions.getTask();
+            dbFunctions.todo.getTask();
             res.end('get\n');
             break;
         case '/list':
-            dbFunctions.getDatabasesList();
+            dbFunctions.todo.getDatabasesList();
             res.end('getDatabasesList\n');
             break;
         default:

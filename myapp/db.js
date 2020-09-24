@@ -12,16 +12,13 @@ class ObjectCollection {
         this.collection = collectionName;
         this.configOptions = { useUnifiedTopology: true };
 
-        try {
-            this.client = await MongoClient.connect(this.mongoUrl, this.configOptions);
-        } catch (error) {
-            console.log(error);
-            throw new Error("Couldn't connect with MongoClient");
-        }
+        MongoClient.connect(this.mongoUrl, this.configOptions)
+            .then(db => this.client = db)
+            .catch(err => console.log(err));
     }
 
     async getDatabasesList() {
-        databasesList = await this.client.db().admin().listDatabases();
+        const databasesList = await this.client.db().admin().listDatabases();
         console.log("Databases:");
         databasesList.databases.forEach(db => console.log(` - ${db.name}`));
     }
