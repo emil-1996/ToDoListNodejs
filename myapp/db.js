@@ -10,6 +10,17 @@ async function listDatabases(client) {
     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
 }
 
+async function listTask(client) {
+    const todoCollection = client.db("todo").collection("todo");
+    const cursor = todoCollection.find({});
+
+    if ((await cursor.count()) === 0) {
+        console.log("No documents found!");
+    }
+
+    await cursor.forEach(element => console.log(element));
+}
+
 async function call(method, additionalParams = false) {
     try {
         const options = { useUnifiedTopology: true };
@@ -26,6 +37,10 @@ async function call(method, additionalParams = false) {
 
 async function getDatabasesList() {
     await call(listDatabases);
+}
+
+async function getTask() {
+    await call(listTask);
 }
 
 async function addTasksFunctionToDb(client, task) {
@@ -47,4 +62,5 @@ async function addTasksFunction(task) {
 module.exports = {
     getDatabasesList: getDatabasesList,
     addTasksFunction: addTasksFunction,
+    getTask: getTask,
 }

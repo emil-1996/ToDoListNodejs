@@ -5,7 +5,7 @@ const dbFunctions = require('./db.js');
 const hostname = '0.0.0.0';
 const port = process.env.PORT;
 
-const task = {name: 'Bill', desc: '123456789101'};
+const task = { name: 'Bill', desc: '12345678910111112312' };
 
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
@@ -21,6 +21,10 @@ const server = http.createServer((req, res) => {
             break;
         case '/delete':
             res.end('DELETE\n');
+            break;
+        case '/get':
+            dbFunctions.getTask();
+            res.end('get\n');
             break;
         case '/list':
             dbFunctions.getDatabasesList();
