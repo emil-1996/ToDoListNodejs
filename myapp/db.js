@@ -5,11 +5,12 @@ const mongoUrl = `mongodb://${login}:${pass}@mongodb_container:27017/`;
 const validator = require('./validator.js');
 
 class ObjectCollection {
-    constructor(collectionName) {
+    constructor(objectConfig) {
         this.login = 'root';
         this.pass = 'mongodb';
         this.mongoUrl = `mongodb://${this.login}:${this.pass}@mongodb_container:27017/`;
-        this.collection = collectionName;
+        this.collection = objectConfig.collectionName;
+        this.dbName = objectConfig.dbName;
         this.configOptions = { useUnifiedTopology: true };
 
         MongoClient.connect(this.mongoUrl, this.configOptions)
@@ -24,7 +25,7 @@ class ObjectCollection {
     }
 
     async getTask() {
-        const todoCollection = this.client.db("todo").collection(this.collection);
+        const todoCollection = this.client.db(this.dbName).collection(this.collection);
         const cursor = todoCollection.find({});
 
         if ((await cursor.count()) === 0) {
@@ -35,7 +36,7 @@ class ObjectCollection {
     }
 
     async addTasksFunctionToDb(task) {
-        const todoCollection = this.client.db("todo").collection(this.collection);
+        const todoCollection = this.client.db(this.dbName).collection(this.collection);
         todoCollection.insertOne(task)
             .then(result => console.log(`Successfully inserted item with _id: ${result.insertedId}`))
             .catch(err => console.error(`Failed to insert item: ${err}`))
@@ -51,7 +52,8 @@ class ObjectCollection {
     }
 }
 
-const todo = new ObjectCollection('todo');
+const configTodo = { collectionName: "todo", dbName: "todo" };
+const todo = new ObjectCollection(configTodo);
 
 module.exports = {
     todo: todo,
