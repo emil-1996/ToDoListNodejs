@@ -1,7 +1,4 @@
 const { MongoClient } = require('mongodb');
-const login = 'root';
-const pass = 'mongodb';
-const mongoUrl = `mongodb://${login}:${pass}@mongodb_container:27017/`;
 const validator = require('./validator.js');
 
 class ObjectCollection {
