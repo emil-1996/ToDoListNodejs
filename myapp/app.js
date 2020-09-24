@@ -23,7 +23,8 @@ const server = http.createServer((req, res) => {
             res.end('DELETE\n');
             break;
         case '/get':
-            dbFunctions.getTask();
+            console.log(dbFunctions);
+            //dbFunctions.getTask();
             res.end('get\n');
             break;
         case '/list':
