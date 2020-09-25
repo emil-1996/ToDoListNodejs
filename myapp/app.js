@@ -6,6 +6,7 @@ const hostname = '0.0.0.0';
 const port = process.env.PORT;
 
 const task = { name: 'Bill', desc: 'abcdefghjkuewqasdasdsa' };
+const deleteQuery = {name: "Bill" };
 
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
@@ -20,6 +21,7 @@ const server = http.createServer((req, res) => {
             res.end('UPDATE\n');
             break;
         case '/delete':
+            dbFunctions.todo.deleteTask(deleteQuery);
             res.end('DELETE\n');
             break;
         case '/get':

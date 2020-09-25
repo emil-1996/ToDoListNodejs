@@ -47,6 +47,13 @@ class ObjectCollection {
             console.error(err.message);
         }
     }
+
+    async deleteTask(query) {
+        const todoCollection = this.client.db(this.dbName).collection(this.collection);
+        todoCollection.deleteOne(query)
+            .then(result => console.log(`Deleted ${result.deletedCount} item.`))
+            .catch(err => console.error(`Delete failed with error: ${err}`))
+    }
 }
 
 const configTodo = { collectionName: "todo", dbName: "todo" };
