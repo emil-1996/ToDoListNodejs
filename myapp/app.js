@@ -8,6 +8,12 @@ const port = process.env.PORT;
 const task = { name: 'Bill', desc: 'abcdefghjkuewqasdasdsa' };
 const deleteQuery = {name: "Bill" };
 
+function incomingData(req, res) {
+    let buffer = '';
+    req.on('data', chunk => buffer += chunk.toString('utf-8'));
+    req.on('end', () => { console.log(buffer) });
+}
+
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
@@ -18,6 +24,7 @@ const server = http.createServer((req, res) => {
             res.end('ADD\n');
             break;
         case '/update':
+            incomingData(req, res);
             res.end('UPDATE\n');
             break;
         case '/delete':
