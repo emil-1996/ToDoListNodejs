@@ -1,9 +1,9 @@
 const Joi = require('joi');
 
-async function validateSchemaToDoInsert(task) {
+async function validateToDoUpsert(task) {
 
-    const schemaToDoInsert = Joi.object({
-        _id:  Joi.allow(),
+    const schemaToDoUpsert = Joi.object({
+        _id: Joi.allow(),
         name: Joi.string()
             .min(3)
             .max(30)
@@ -19,12 +19,29 @@ async function validateSchemaToDoInsert(task) {
     });
 
     try {
-        return await schemaToDoInsert.validateAsync(task);
+        return schemaToDoUpsert.validateAsync(task);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function validateToDoDelete(task) {
+
+    const schemaToDoDelete = Joi.object({
+        _id: Joi.allow(),
+        name: Joi.string()
+            .min(3)
+            .max(30),
+    });
+
+    try {
+        return schemaToDoDelete.validateAsync(task);
     } catch (err) {
         throw err;
     }
 }
 
 module.exports = {
-    validateSchemaToDoInsert: validateSchemaToDoInsert,
+    validateToDoUpsert,
+    validateToDoDelete,
 }

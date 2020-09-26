@@ -26,33 +26,34 @@ class ObjectCollection {
         const cursor = todoCollection.find({});
 
         if ((await cursor.count()) === 0) {
-            console.log("No documents found!");
+            return JSON.stringify({ message: "No documents found!" });
         }
 
-        await cursor.forEach(element => console.log(element));
-    }
-
-    async addTasksFunctionToDb(task) {
-        const todoCollection = this.client.db(this.dbName).collection(this.collection);
-        todoCollection.insertOne(task)
-            .then(result => console.log(`Successfully inserted item with _id: ${result.insertedId}`))
-            .catch(err => console.error(`Failed to insert item: ${err}`))
+        let result = [];
+        await cursor.forEach(element => result.push(element));
+        return JSON.stringify(result);
     }
 
     async addTasksFunction(task) {
         try {
-            await validator.validateSchemaToDoInsert(task)
-            await this.addTasksFunctionToDb(task);
+            await validator.validateToDoUpsert(task);
+            const todoCollection = this.client.db(this.dbName).collection(this.collection);
+            const result = await todoCollection.insertOne(task);
+            return JSON.stringify({ message: `Successfully inserted item with _id: ${result.insertedId}` });
         } catch (err) {
-            console.error(err.message);
+            throw JSON.stringify({ error: `Failed to insert item: ${err}` });
         }
     }
 
     async deleteTask(query) {
-        const todoCollection = this.client.db(this.dbName).collection(this.collection);
-        todoCollection.deleteOne(query)
-            .then(result => console.log(`Deleted ${result.deletedCount} item.`))
-            .catch(err => console.error(`Delete failed with error: ${err}`))
+        try {
+            await validator.validateToDoDelete(query);
+            const todoCollection = this.client.db(this.dbName).collection(this.collection);
+            const result = await todoCollection.deleteOne(query)
+            return JSON.stringify({ message: `Deleted ${result.deletedCount} item.` });
+        } catch (err) {
+            throw JSON.stringify({ error: `Delete failed with error: ${err}` });
+        }
     }
 }
 
@@ -60,5 +61,5 @@ const configTodo = { collectionName: "todo", dbName: "todo" };
 const todo = new ObjectCollection(configTodo);
 
 module.exports = {
-    todo: todo,
+    todo,
 }

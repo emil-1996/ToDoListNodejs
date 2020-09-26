@@ -5,13 +5,41 @@ const dbFunctions = require('./db.js');
 const hostname = '0.0.0.0';
 const port = process.env.PORT;
 
-const task = { name: 'Bill', desc: 'abcdefghjkuewqasdasdsa' };
-const deleteQuery = {name: "Bill" };
+function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
 
-function incomingData(req, res) {
+function insertData(req, res) {
     let buffer = '';
     req.on('data', chunk => buffer += chunk.toString('utf-8'));
-    req.on('end', () => { console.log(buffer) });
+    req.on('end', () => {
+        if (IsJsonString(buffer)) {
+            dbFunctions.todo.addTasksFunction(JSON.parse(buffer))
+                .then(result => res.end(result))
+                .catch(err => res.end(err))
+        } else {
+            res.end(JSON.stringify({ error: `Invalid json` }));
+        }
+    });
+}
+
+function deleteData(req, res) {
+    let buffer = '';
+    req.on('data', chunk => buffer += chunk.toString('utf-8'));
+    req.on('end', () => {
+        if (IsJsonString(buffer)) {
+            dbFunctions.todo.deleteTask(JSON.parse(buffer))
+                .then(result => res.end(result))
+                .catch(err => res.end(err))
+        } else {
+            res.end(JSON.stringify({ error: `Invalid json` }));
+        }
+    });
 }
 
 const server = http.createServer((req, res) => {
@@ -20,20 +48,19 @@ const server = http.createServer((req, res) => {
     const lowerCaseUrl = req.url.toLowerCase();
     switch (lowerCaseUrl) {
         case '/add':
-            dbFunctions.todo.addTasksFunction(task);
-            res.end('ADD\n');
+            insertData(req, res);
             break;
         case '/update':
-            incomingData(req, res);
+            //incomingData(req, res);
             res.end('UPDATE\n');
             break;
         case '/delete':
-            dbFunctions.todo.deleteTask(deleteQuery);
-            res.end('DELETE\n');
+            deleteData(req, res);
             break;
         case '/get':
-            dbFunctions.todo.getTask();
-            res.end('get\n');
+            dbFunctions.todo.getTask()
+                .then(result => res.end(result))
+                .catch(err => res.end(err))
             break;
         case '/list':
             dbFunctions.todo.getDatabasesList();
