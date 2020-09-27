@@ -47,7 +47,7 @@ class ObjectCollection {
 
     async updateTask(task) {
         try {
-            //await validator.validateToDoUpsert(task);
+            await validator.validateToDoUpsert(task);
             const todoCollection = this.client.db(this.dbName).collection(this.collection);
             if (!task._id) {
                 throw new Error("Object task doesn't have '_id' property");
