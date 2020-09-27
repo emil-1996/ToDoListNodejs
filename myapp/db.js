@@ -61,12 +61,11 @@ class ObjectCollection {
                 }
                 updateObject[key] = value;
             }
-            const update = JSON.stringify({ $push: updateObject });
-            console.log(query);
-            console.log(update);
+            const update = { $set: updateObject };
             const result = await todoCollection.updateOne(query, update, options);
-            if (result.matchedCount && result.modifiedCount) {
-                return JSON.stringify({ message: `Successfully added a new review.` });
+            console.log(result);
+            if (result.matchedCount || result.upsertedId) {
+                return JSON.stringify({ message: { matchedCount: result.matchedCount, modifiedCount: result.modifiedCount, upsertedId: result.upsertedId, upsertedCount: result.upsertedCount } });
             }
         } catch (err) {
             throw JSON.stringify({ error: err.message });
