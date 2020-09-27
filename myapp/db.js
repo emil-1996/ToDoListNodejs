@@ -34,7 +34,7 @@ class ObjectCollection {
         return JSON.stringify(result);
     }
 
-    async addTaskFunction(task) {
+    async addTask(task) {
         try {
             await validator.validateToDoUpsert(task);
             const todoCollection = this.client.db(this.dbName).collection(this.collection);
