@@ -58,7 +58,7 @@ function updateData(req, res) {
 
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
+    res.setHeader('Content-Type', 'application/json');
     const lowerCaseUrl = req.url.toLowerCase();
     switch (lowerCaseUrl) {
         case '/add':
@@ -80,7 +80,7 @@ const server = http.createServer((req, res) => {
             res.end('getDatabasesList\n');
             break;
         default:
-            res.end('Hello World\n');
+            res.end(JSON.stringify({error: `Incorrect method`}));
             break;
     }
 });
