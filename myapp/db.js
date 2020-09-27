@@ -1,5 +1,4 @@
-const { MongoClient } = require('mongodb');
-const { ObjectId } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const validator = require('./validator.js');
 
 class ObjectCollection {
