@@ -19,7 +19,7 @@ function insertData(req, res) {
     req.on('data', chunk => buffer += chunk.toString('utf-8'));
     req.on('end', () => {
         if (IsJsonString(buffer)) {
-            dbFunctions.todo.addTasksFunction(JSON.parse(buffer))
+            dbFunctions.todo.addTaskFunction(JSON.parse(buffer))
                 .then(result => res.end(result))
                 .catch(err => res.end(err))
         } else {
