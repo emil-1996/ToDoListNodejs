@@ -1,4 +1,5 @@
 const { MongoClient } = require('mongodb');
+const { ObjectId } = require('mongodb');
 const validator = require('./validator.js');
 
 class ObjectCollection {
@@ -49,7 +50,12 @@ class ObjectCollection {
         try {
             await validator.validateToDoDelete(query);
             const todoCollection = this.client.db(this.dbName).collection(this.collection);
-            const result = await todoCollection.deleteOne(query)
+            let result = {};
+            if (query._id) {
+                result = await todoCollection.deleteOne({ "_id": ObjectId(query._id) });
+            } else {
+                result = await todoCollection.deleteOne(query)
+            }
             return JSON.stringify({ message: `Deleted ${result.deletedCount} item.` });
         } catch (err) {
             throw JSON.stringify({ error: `Delete failed with error: ${err}` });
