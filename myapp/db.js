@@ -45,6 +45,34 @@ class ObjectCollection {
         }
     }
 
+    async updateTask(task) {
+        try {
+            //await validator.validateToDoUpsert(task);
+            const todoCollection = this.client.db(this.dbName).collection(this.collection);
+            if (!task._id) {
+                throw new Error("Object task doesn't have '_id' property");
+            }
+            const query = { "_id": ObjectId(task._id) };
+            const options = { "upsert": false };
+            let updateObject = {};
+            for (const [key, value] of Object.entries(task)) {
+                if (key === '_id') {
+                    continue;
+                }
+                updateObject[key] = value;
+            }
+            const update = JSON.stringify({ $push: updateObject });
+            console.log(query);
+            console.log(update);
+            const result = await todoCollection.updateOne(query, update, options);
+            if (result.matchedCount && result.modifiedCount) {
+                return JSON.stringify({ message: `Successfully added a new review.` });
+            }
+        } catch (err) {
+            throw JSON.stringify({ error: err.message });
+        }
+    }
+
     async deleteTask(query) {
         try {
             await validator.validateToDoDelete(query);

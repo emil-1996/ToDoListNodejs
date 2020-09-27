@@ -42,6 +42,20 @@ function deleteData(req, res) {
     });
 }
 
+function updateData(req, res) {
+    let buffer = '';
+    req.on('data', chunk => buffer += chunk.toString('utf-8'));
+    req.on('end', () => {
+        if (IsJsonString(buffer)) {
+            dbFunctions.todo.updateTask(JSON.parse(buffer))
+                .then(result => res.end(result))
+                .catch(err => res.end(err))
+        } else {
+            res.end(JSON.stringify({ error: `Invalid json` }));
+        }
+    });
+}
+
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
@@ -51,8 +65,7 @@ const server = http.createServer((req, res) => {
             insertData(req, res);
             break;
         case '/update':
-            //incomingData(req, res);
-            res.end('UPDATE\n');
+            updateData(req, res);
             break;
         case '/delete':
             deleteData(req, res);
