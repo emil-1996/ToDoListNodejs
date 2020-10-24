@@ -1,6 +1,7 @@
 const http = require('http');
 const url = require('url');
 const dbFunctions = require('./models/db.js');
+const pug = require('pug');
 
 const hostname = '0.0.0.0';
 const port = process.env.PORT;
@@ -13,6 +14,9 @@ function IsJsonString(str) {
     }
     return true;
 }
+
+const compiledFunction = pug.compileFile('views/template.pug');
+console.log(compiledFunction({name: "Pug TEST"}));
 
 function getRequestedData(req) {
     return new Promise((resolve, reject) => {
