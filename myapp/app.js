@@ -32,33 +32,12 @@ function getRequestedData(req) {
     });
 }
 
-async function insertData(req, res) {
+async function getRespondData(req, res, callback) {
     try {
         let requestData = await getRequestedData(req);
-        let result = await dbFunctions.todo.addTask(requestData);
+        let callbackFunction = callback.bind(dbFunctions.todo);
+        let result = await callbackFunction(requestData);
         res.end(result);
-    } catch (Error) {
-        res.end(JSON.stringify({ error: Error }));
-        console.log(Error);
-    }
-}
-
-async function deleteData(req, res) {
-    try {
-        let requestData = await getRequestedData(req);
-        let result = await dbFunctions.todo.deleteTask(requestData);
-        res.end(result);
-    } catch (Error) {
-        res.end(JSON.stringify({ error: Error }));
-        console.log(Error);
-    }
-}
-
-async function updateData(req, res) {
-    try {
-    let requestData = await getRequestedData(req);
-    let result = await dbFunctions.todo.updateTask(requestData);
-    res.end(result);
     } catch (Error) {
         res.end(JSON.stringify({ error: Error }));
         console.log(Error);
@@ -71,13 +50,13 @@ const server = http.createServer((req, res) => {
     const lowerCaseUrl = req.url.toLowerCase();
     switch (lowerCaseUrl) {
         case '/add':
-            insertData(req, res);
+            getRespondData(req, res, dbFunctions.todo.addTask);
             break;
         case '/update':
-            updateData(req, res);
+            getRespondData(req, res, dbFunctions.todo.updateTask);
             break;
         case '/delete':
-            deleteData(req, res);
+            getRespondData(req, res, dbFunctions.todo.deleteTask);
             break;
         case '/get':
             dbFunctions.todo.getTask()
