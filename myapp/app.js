@@ -14,46 +14,55 @@ function IsJsonString(str) {
     return true;
 }
 
-function insertData(req, res) {
-    let buffer = '';
-    req.on('data', chunk => buffer += chunk.toString('utf-8'));
-    req.on('end', () => {
-        if (IsJsonString(buffer)) {
-            dbFunctions.todo.addTask(JSON.parse(buffer))
-                .then(result => res.end(result))
-                .catch(err => res.end(err))
-        } else {
-            res.end(JSON.stringify({ error: `Invalid json` }));
-        }
+function getRequestedData(req) {
+    return new Promise((resolve, reject) => {
+        let buffer = '';
+        req.on('data', chunk => buffer += chunk.toString('utf-8'));
+        req.on('end', () => {
+            try {
+                if (IsJsonString(buffer)) {
+                    resolve(JSON.parse(buffer));
+                } else {
+                    reject("Invalid json");
+                }
+            } catch (parseError) {
+                reject(parseError);
+            }
+        })
     });
 }
 
-function deleteData(req, res) {
-    let buffer = '';
-    req.on('data', chunk => buffer += chunk.toString('utf-8'));
-    req.on('end', () => {
-        if (IsJsonString(buffer)) {
-            dbFunctions.todo.deleteTask(JSON.parse(buffer))
-                .then(result => res.end(result))
-                .catch(err => res.end(err))
-        } else {
-            res.end(JSON.stringify({ error: `Invalid json` }));
-        }
-    });
+async function insertData(req, res) {
+    try {
+        let requestData = await getRequestedData(req);
+        let result = await dbFunctions.todo.addTask(requestData);
+        res.end(result);
+    } catch (Error) {
+        res.end(JSON.stringify({ error: Error }));
+        console.log(Error);
+    }
 }
 
-function updateData(req, res) {
-    let buffer = '';
-    req.on('data', chunk => buffer += chunk.toString('utf-8'));
-    req.on('end', () => {
-        if (IsJsonString(buffer)) {
-            dbFunctions.todo.updateTask(JSON.parse(buffer))
-                .then(result => res.end(result))
-                .catch(err => res.end(err))
-        } else {
-            res.end(JSON.stringify({ error: `Invalid json` }));
-        }
-    });
+async function deleteData(req, res) {
+    try {
+        let requestData = await getRequestedData(req);
+        let result = await dbFunctions.todo.deleteTask(requestData);
+        res.end(result);
+    } catch (Error) {
+        res.end(JSON.stringify({ error: Error }));
+        console.log(Error);
+    }
+}
+
+async function updateData(req, res) {
+    try {
+    let requestData = await getRequestedData(req);
+    let result = await dbFunctions.todo.updateTask(requestData);
+    res.end(result);
+    } catch (Error) {
+        res.end(JSON.stringify({ error: Error }));
+        console.log(Error);
+    }
 }
 
 const server = http.createServer((req, res) => {
@@ -80,7 +89,7 @@ const server = http.createServer((req, res) => {
             res.end('getDatabasesList\n');
             break;
         default:
-            res.end(JSON.stringify({error: `Incorrect method`}));
+            res.end(JSON.stringify({ error: `Incorrect method` }));
             break;
     }
 });
