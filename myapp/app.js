@@ -15,8 +15,7 @@ function IsJsonString(str) {
     return true;
 }
 
-const compiledFunction = pug.compileFile('views/template.pug');
-console.log(compiledFunction({name: "Pug TEST"}));
+const compiledFunction = pug.compileFile('views/pug/template.pug');
 
 function getRequestedData(req) {
     return new Promise((resolve, reject) => {
@@ -66,6 +65,10 @@ const server = http.createServer((req, res) => {
             dbFunctions.todo.getTask()
                 .then(result => res.end(result))
                 .catch(err => res.end(err))
+            break;
+        case '/pug':
+            res.setHeader('Content-Type', 'text/html; charset=UTF-8');
+            res.end(compiledFunction({ name: "Witaj na stronie" }));
             break;
         case '/list':
             dbFunctions.todo.getDatabasesList();
