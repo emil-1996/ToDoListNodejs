@@ -76,7 +76,7 @@ const server = http.createServer((req, res) => {
             break;
         case '/pug':
             res.setHeader('Content-Type', 'text/html; charset=UTF-8');
-            res.end(compiledFunction({ name: "Witaj na stroniee" }));
+            res.end(compiledFunction({ name: "Witaj na stronie" }));
             break;
         case '/views/js/main.js':
             res.setHeader('Content-Type', 'text/javascript; charset=UTF-8');
