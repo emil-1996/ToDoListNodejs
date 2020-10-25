@@ -75,10 +75,6 @@ const server = http.createServer((req, res) => {
                 .then(result => res.end(result))
                 .catch(err => res.end(err))
             break;
-        case '/pug':
-            res.setHeader('Content-Type', 'text/html; charset=UTF-8');
-            res.end(compiledFunction({ name: "Witaj na stronie" }));
-            break;
         case '/views/js/main.js':
             res.setHeader('Content-Type', 'text/javascript; charset=UTF-8');
             res.end(jsScripts);
@@ -87,12 +83,9 @@ const server = http.createServer((req, res) => {
             res.setHeader('Content-Type', 'text/css; charset=UTF-8');
             res.end(cssStyle);
             break;
-        case '/list':
-            dbFunctions.todo.getDatabasesList();
-            res.end('getDatabasesList\n');
-            break;
         default:
-            res.end(JSON.stringify({ error: `Incorrect method` }));
+            res.setHeader('Content-Type', 'text/html; charset=UTF-8');
+            res.end(compiledFunction({ name: "Witaj na stronie" }));
             break;
     }
 });
