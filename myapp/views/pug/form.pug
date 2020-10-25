@@ -1,0 +1,17 @@
+div#todo-app-form
+    form(name="addTask")
+        p What do you want to do today?
+        input(type='text' id='taskName' name='taskName' class='todo-input' minlength='3' placeholder='Name Task')
+        br
+        input(type='text' id='taskDesc' name='taskDesc' class='todo-input' minlength='15' placeholder='Desc Task')
+        br
+        input(type='radio' id='low' name='todo-input-priority' class='todo-input-priority' value='low')
+        label(for='low') Low
+        br
+        input(type='radio' id='medium' name='todo-input-priority' class='todo-input-priority' value='medium')
+        label(for='medium') Medium
+        br
+        input(type='radio' id='high' name='todo-input-priority' class='todo-input-priority' value='high')
+        label(for='high') High
+        br
+        input(type='button' value='Dodaj' onclick="validateTask()" style='cursor:pointer;')
