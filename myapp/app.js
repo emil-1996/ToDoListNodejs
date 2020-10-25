@@ -24,6 +24,7 @@ function getDataFromFileSync(path){
 }
 
 const jsScripts = getDataFromFileSync('views/js/main.js');
+const cssStyle = getDataFromFileSync('views/css/main.css');
 
 function getRequestedData(req) {
     return new Promise((resolve, reject) => {
@@ -81,6 +82,10 @@ const server = http.createServer((req, res) => {
         case '/views/js/main.js':
             res.setHeader('Content-Type', 'text/javascript; charset=UTF-8');
             res.end(jsScripts);
+            break;
+        case '/views/css/main.css':
+            res.setHeader('Content-Type', 'text/css; charset=UTF-8');
+            res.end(cssStyle);
             break;
         case '/list':
             dbFunctions.todo.getDatabasesList();
