@@ -2,6 +2,7 @@ const http = require('http');
 const url = require('url');
 const dbFunctions = require('./models/db.js');
 const pug = require('pug');
+const fs = require('fs');
 
 const hostname = '0.0.0.0';
 const port = process.env.PORT;
@@ -16,6 +17,13 @@ function IsJsonString(str) {
 }
 
 const compiledFunction = pug.compileFile('views/pug/template.pug');
+
+function getDataFromFileSync(path){
+    const contents = fs.readFileSync(path).toString();
+    return contents;
+}
+
+const jsScripts = getDataFromFileSync('views/js/main.js');
 
 function getRequestedData(req) {
     return new Promise((resolve, reject) => {
@@ -69,6 +77,10 @@ const server = http.createServer((req, res) => {
         case '/pug':
             res.setHeader('Content-Type', 'text/html; charset=UTF-8');
             res.end(compiledFunction({ name: "Witaj na stronie" }));
+            break;
+        case '/views/js/main.js':
+            res.setHeader('Content-Type', 'text/javascript; charset=UTF-8');
+            res.end(jsScripts);
             break;
         case '/list':
             dbFunctions.todo.getDatabasesList();
