@@ -16,7 +16,7 @@ function IsJsonString(str) {
     return true;
 }
 
-const compiledFunction = pug.compileFile('views/pug/template.pug');
+const compiledFunction = pug.compileFile('views/pug/index.pug');
 
 function getDataFromFileSync(path){
     const contents = fs.readFileSync(path).toString();
