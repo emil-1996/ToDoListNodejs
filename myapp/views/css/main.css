@@ -1,3 +1,8 @@
-p{
-    color: red;
-} 
+h1#pageTitle{
+    color: grey;
+    text-align: center;
+}
+p#welcomeMessage{
+    color: black;
+    text-align: center;
+}
