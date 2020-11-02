@@ -85,7 +85,7 @@ const server = http.createServer((req, res) => {
             break;
         default:
             res.setHeader('Content-Type', 'text/html; charset=UTF-8');
-            res.end(compiledFunction({ name: "Witaj na stronie" }));
+            res.end(compiledFunction({ name: "Czy chcesz dodać zadanie?" }));
             break;
     }
 });

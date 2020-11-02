@@ -1,4 +1,14 @@
+function showForm(){
+    const modal = document.querySelector("#todo-app-form");
+    const btn = document.querySelector("span#close");
+    modal.style.display = "block"; 
+}
 
+function hideForm(){
+    const modal = document.querySelector("#todo-app-form");
+    const btn = document.querySelector("span#close");
+    modal.style.display = "none"; 
+}
 
 function getTaskFromForm() {
     const formTask = document.forms;
