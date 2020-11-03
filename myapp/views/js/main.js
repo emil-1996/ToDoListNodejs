@@ -38,3 +38,16 @@ async function sendTask() {
         alert(error.error);
     }
 }
+
+function removeElementFromDb(element) {
+    console.log(element.querySelector('.element-id').innerHTML);
+    element.remove();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    todoList.addEventListener("click", e => {
+        if (e.target.classList.contains("element-delete")) {
+            removeElementFromDb(e.target.parentElement.parentElement);
+        }
+    });
+});

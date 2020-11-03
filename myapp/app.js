@@ -25,6 +25,7 @@ function getDataFromFileSync(path){
 
 const jsScripts = getDataFromFileSync('views/js/main.js');
 const cssStyle = getDataFromFileSync('views/css/main.css');
+const trashIcon = getDataFromFileSync('views/images/trash.svg');
 
 function getRequestedData(req) {
     return new Promise((resolve, reject) => {
@@ -83,6 +84,10 @@ const server = http.createServer((req, res) => {
             res.setHeader('Content-Type', 'text/css; charset=UTF-8');
             res.end(cssStyle);
             break;
+        case '/views/images/trash.svg':
+            res.setHeader('Content-Type', 'image/svg+xml; charset=UTF-8');
+            res.end(trashIcon);
+            break;    
         default:
             res.setHeader('Content-Type', 'text/html; charset=UTF-8');
             res.end(compiledFunction({ name: "Czy chcesz dodać zadanie?" }));
