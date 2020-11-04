@@ -32,7 +32,7 @@ async function sendTask() {
             throw JSON.parse(result.error);
         }
         alert(result.message);
-        console.log(result);
+        renderTasks();
     } catch (error) {
         console.log(error);
         alert(error.error);
