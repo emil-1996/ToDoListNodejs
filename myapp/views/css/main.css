@@ -7,12 +7,37 @@ p#welcomeMessage{
     text-align: center;
 }
 
+#todo-app-form{
+	display: none;
+	/* position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0%;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgb(0,0,0);
+	background-color: rgba(0,0,0,0.4); */
+}
+
+button#myBtnOpenon{
+	text-align: center;
+	margin: 8px;
+}
+
+span#close{
+		color: #aaa;
+		float: right;
+		font-size: 14px;
+		font-weight: bold;
+}
 form#addTask{
 	font: 95% Arial, Helvetica, sans-serif;
 	max-width: 400px;
 	margin: 10px auto;
 	padding: 16px;
 	background: #F7F7F7;
+	border: 4px solid #43D1AF;
 }
 form#addTask h1{
 	background: #43D1AF;
@@ -34,10 +59,7 @@ form#addTask input[type="url"],
 form#addTask textarea,
 form#addTask select
 {
-	-webkit-transition: all 0.30s ease-in-out;
-	-moz-transition: all 0.30s ease-in-out;
-	-ms-transition: all 0.30s ease-in-out;
-	-o-transition: all 0.30s ease-in-out;
+	transition: all 0.30s ease-in-out;
 	outline: none;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -96,4 +118,78 @@ form#addTask input[type="radio"]{
 	border-radius:3px;
     cursor:pointer;
     margin-bottom: 10px;
+}
+
+.list-cnt {
+    background: #fff;
+    font-family: sans-serif;
+    border-radius: 5px;
+    margin:1rem 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    padding: 2rem;
+}
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.list-search-form {
+    width: 50%;
+}
+.list-search {
+    border: 1px solid #aaa;
+    padding: 0.7rem;
+    width: 100%;
+    border-radius: 3px;
+}
+.list-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.element {
+    border-top: 1px solid #ddd;
+    margin-top: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.element-bar {
+    overflow:hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+.element-title {
+	margin:0;
+	font-size: 1.2rem;
+    font-weight: bold;
+}
+.element-priority {
+	margin:0;
+	font-size: 1.1rem;
+	font-weight: normal;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+.element-id {
+	display: none;
+}
+.element-delete {
+    border:0;
+    background: url(../images/trash.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    text-indent: -999px;
+    overflow: hidden;
+}
+.element-text {
+    color:#777;
+    font-size:0.8rem;
 }

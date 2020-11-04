@@ -2,4 +2,7 @@ include template.pug
 
 div#content
      p#welcomeMessage #{name}
+          br
+          button#myBtnOpenon(onclick="showForm()") Dodaj zadanie
      include form.pug
+     include tasks.pug

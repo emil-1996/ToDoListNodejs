@@ -1,6 +1,6 @@
 div#todo-app-form
     form(name="addTask" id="addTask")
-        p What do you want to do today?
+        p Add Task <span id='close' onclick="hideForm()">&times;</span>
         input(type='text' id='taskName' name='taskName' class='todo-input' minlength='3' placeholder='Name Task')
         br
         input(type='text' id='taskDesc' name='taskDesc' class='todo-input' minlength='15' placeholder='Desc Task')
