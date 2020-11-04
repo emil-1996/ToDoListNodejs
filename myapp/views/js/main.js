@@ -41,7 +41,7 @@ async function sendTask() {
 
 function removeElementFromDb(element) {
     console.log(element.querySelector('.element-id').innerHTML);
-    console.log(getData());
+    console.log(renderTask());
     element.remove();
 }
 
@@ -57,7 +57,18 @@ async function getData() {
     try {
         const response = await fetch("http://0.0.0.0:3000/get", {});
         const json = await response.json();
-        console.log(json); //Podgląd pobranych danych z fetcha
+        return json;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function renderTask() {
+    try {
+        const tasks = await getData();
+        for (let task of tasks) {
+            console.log(task); //one task
+        }
     } catch (error) {
         console.log(error);
     }
