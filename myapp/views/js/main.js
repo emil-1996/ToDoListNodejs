@@ -39,15 +39,28 @@ async function sendTask() {
     }
 }
 
-function removeElementFromDb(element) {
-    console.log(element.querySelector('.element-id').innerHTML);
+function removeElement(element) {
+    const idTask = element.querySelector('.element-id').innerHTML;
+    removeElementFromDB(idTask);
     element.remove();
+}
+
+async function removeElementFromDB(idTask) {
+    try {
+        const response = await fetch("http://0.0.0.0:3000/delete", {
+        method: 'POST',
+        body: JSON.stringify({"_id": idTask})});
+        const json = await response.json();
+        console.log(json);
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
     todoList.addEventListener("click", e => {
         if (e.target.classList.contains("element-delete")) {
-            removeElementFromDb(e.target.parentElement.parentElement);
+            removeElement(e.target.parentElement.parentElement);
         }
     });
 });
