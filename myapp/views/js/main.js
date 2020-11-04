@@ -1,13 +1,13 @@
-function showForm(){
+function showForm() {
     const modal = document.querySelector("#todo-app-form");
     const btn = document.querySelector("span#close");
-    modal.style.display = "block"; 
+    modal.style.display = "block";
 }
 
-function hideForm(){
+function hideForm() {
     const modal = document.querySelector("#todo-app-form");
     const btn = document.querySelector("span#close");
-    modal.style.display = "none"; 
+    modal.style.display = "none";
 }
 
 function getTaskFromForm() {
@@ -28,7 +28,7 @@ async function sendTask() {
             body: task
         });
         const result = await response.json();
-        if(result.error){
+        if (result.error) {
             throw JSON.parse(result.error);
         }
         alert(result.message);
@@ -41,6 +41,7 @@ async function sendTask() {
 
 function removeElementFromDb(element) {
     console.log(element.querySelector('.element-id').innerHTML);
+    console.log(getData());
     element.remove();
 }
 
@@ -51,3 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+async function getData() {
+    try {
+        const response = await fetch("http://0.0.0.0:3000/get", {});
+        const json = await response.json();
+        console.log(json); //Podgląd pobranych danych z fetcha
+    } catch (error) {
+        console.log(error);
+    }
+}
