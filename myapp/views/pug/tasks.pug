@@ -3,7 +3,7 @@ section.list-cnt
     h2.list-title
       | Lista zadań
     form.list-search-form
-      input#todoSearch.list-search(type='search')
+      input#todoSearch.list-search(type='search' onkeyup='search()')
   #todoList.list
     //- .element //Na sztywno pierwsze zadania
     //-     .element-bar

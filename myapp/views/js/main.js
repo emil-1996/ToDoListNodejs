@@ -105,3 +105,19 @@ function renderTask(task){
     </div>`
     return output;
 }
+
+function search() {
+    const searchField = document.querySelector("#todoSearch");
+    const searchValue = searchField.value;
+    const tasks = document.querySelector('#todoList.list');
+    for (const task of tasks.children) {
+        const title = task.querySelector('h3.element-title');
+        const contains = title.innerHTML.includes(searchValue);
+        let element = title.parentElement.parentElement;
+        if(contains){
+            element.style.display = "";
+        }else {
+            element.style.display = "none";
+        }
+    }
+}
