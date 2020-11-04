@@ -41,7 +41,7 @@ async function sendTask() {
 
 function removeElementFromDb(element) {
     console.log(element.querySelector('.element-id').innerHTML);
-    console.log(renderTask());
+    console.log(renderTasks());
     element.remove();
 }
 
@@ -63,13 +63,29 @@ async function getData() {
     }
 }
 
-async function renderTask() {
+async function renderTasks() {
     try {
+        let html = '';
         const tasks = await getData();
         for (let task of tasks) {
-            console.log(task); //one task
+           html += renderTask(task);
         }
+        console.log(html);
     } catch (error) {
         console.log(error);
     }
+}
+
+function renderTask(task){
+    let output = '';
+    output += `<div class="element">
+    <div class="element-bar">
+        <h3 class="element-title">${task.name}</h3><button class="element-delete" title="Usuń task"></button></div>
+    <div class="element-details">
+        <h3 class="element-priority">${task.priority}</h3>
+        <h3 class="element-id">${task._id}</h3>
+    </div>
+    <div class="element-text"></div>${task.desc}</div>
+    </div>`
+    return output;
 }
