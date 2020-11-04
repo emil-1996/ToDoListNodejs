@@ -41,7 +41,6 @@ async function sendTask() {
 
 function removeElementFromDb(element) {
     console.log(element.querySelector('.element-id').innerHTML);
-    console.log(renderTasks());
     element.remove();
 }
 
@@ -52,6 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+window.addEventListener('load', () => {
+    renderTasks();
+  });
 
 async function getData() {
     try {
@@ -70,7 +73,7 @@ async function renderTasks() {
         for (let task of tasks) {
            html += renderTask(task);
         }
-        console.log(html);
+        document.querySelector('#todoList.list').innerHTML = html;
     } catch (error) {
         console.log(error);
     }
