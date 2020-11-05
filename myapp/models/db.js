@@ -52,17 +52,8 @@ class ObjectCollection {
             if (!task._id) {
                 throw new Error("Object task doesn't have '_id' property");
             }
-            const query = { "_id": ObjectId(task._id) };
-            const options = { "upsert": true };
-            let updateObject = {};
-            for (const [key, value] of Object.entries(task)) {
-                if (key === '_id') {
-                    continue;
-                }
-                updateObject[key] = value;
-            }
-            const update = { $set: updateObject };
-            const result = await todoCollection.updateOne(query, update, options);
+            const {_id, ...$set} = task;
+            const result = await todoCollection.updateOne({ _id }, { $set }, { "upsert": true });
             if (result.matchedCount || result.upsertedId) {
                 return JSON.stringify({ message: { matchedCount: result.matchedCount, modifiedCount: result.modifiedCount, upsertedId: result.upsertedId, upsertedCount: result.upsertedCount } });
             }
