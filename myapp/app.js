@@ -3,6 +3,7 @@ const url = require('url');
 const dbFunctions = require('./models/db.js');
 const pug = require('pug');
 const fs = require('fs');
+const static = require('node-static');
 
 const hostname = '0.0.0.0';
 const port = process.env.PORT;
@@ -23,9 +24,7 @@ function getDataFromFileSync(path){
     return contents;
 }
 
-const jsScripts = getDataFromFileSync('views/js/main.js');
-const cssStyle = getDataFromFileSync('views/css/main.css');
-const trashIcon = getDataFromFileSync('views/images/trash.svg');
+const staticFiles = new static.Server('./views');
 
 function getRequestedData(req) {
     return new Promise((resolve, reject) => {
@@ -77,17 +76,14 @@ const server = http.createServer((req, res) => {
                 .catch(err => res.end(err))
             break;
         case '/views/js/main.js':
-            res.setHeader('Content-Type', 'text/javascript; charset=UTF-8');
-            res.end(jsScripts);
+            staticFiles.serveFile('/js/main.js', 200, {'Content-Type': 'text/javascript; charset=UTF-8'}, req, res);
             break;
         case '/views/css/main.css':
-            res.setHeader('Content-Type', 'text/css; charset=UTF-8');
-            res.end(cssStyle);
+            staticFiles.serveFile('/css/main.css', 200, {'Content-Type': 'text/css; charset=UTF-8'}, req, res);
             break;
         case '/views/images/trash.svg':
-            res.setHeader('Content-Type', 'image/svg+xml; charset=UTF-8');
-            res.end(trashIcon);
-            break;    
+            staticFiles.serveFile('/images/trash.svg', 200, {'Content-Type': 'image/svg+xml; charset=UTF-8'}, req, res);
+            break;
         default:
             res.setHeader('Content-Type', 'text/html; charset=UTF-8');
             res.end(compiledFunction({ name: "Czy chcesz dodać zadanie?" }));

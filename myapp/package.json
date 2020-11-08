@@ -4,6 +4,7 @@
     "dependencies": {
         "joi": "^17.2.1",
         "mongodb": "^3.6.2",
+        "node-static": "^0.7.11",
         "pug": "^3.0.0"
     }
 }
