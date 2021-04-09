@@ -59,6 +59,7 @@ async function getRespondData(req, res, callback) {
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     const lowerCaseUrl = req.url.toLowerCase();
     switch (lowerCaseUrl) {
         case '/add':
